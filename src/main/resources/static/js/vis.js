@@ -14,10 +14,10 @@ function VisController($scope, $http) {
             .attr("fill", "green");
         var textLabels = text
             .attr("x", function (d) {
-                return d.x + 3;
+                return d.x-5;
             })
             .attr("y", function (d) {
-                return d.y + 3;
+                return d.y + 15;
             })
             .text(function (d) {
                 return d.name
@@ -27,6 +27,24 @@ function VisController($scope, $http) {
     $http.get('/region').
     success(function (data) {
         $scope.regions = data;
+        var regions = $scope.svgContainer.selectAll("region").data(data).enter().append("polygon");
+        var text = $scope.svgContainer.selectAll("region-text").data(data).enter().append("text");
+        regions.attr("points", function (d) {
+            return d.points.map(function (d) {
+                return [d.x, d.y].join(",");
+            }).join(" ");
+        }).attr("stroke", "black").attr("stroke-width", "2px").style("fill", "none");
+        var textLabels = text
+            .attr("x", function (d) {
+                return d.points[0].x + 10;
+            })
+            .attr("y", function (d) {
+                return d.points[0].y + 30;
+            })
+            .text(function (d) {
+                return d.name
+            })
+            .attr("font-size", "10px");
     });
     $http.get('/pond').
     success(function (data) {
@@ -40,15 +58,15 @@ function VisController($scope, $http) {
         }).attr("r", function (d) {
                 return d.radius;
             })
-            .attr("fill", "blue")
+            .attr("fill", "lightblue")
             .attr("stroke", "black")
-            .attr("stroke-width", "2px");
+            .attr("stroke-width", "1px");
         var textLabels = text
             .attr("x", function (d) {
-                return d.centerX + 3;
+                return d.centerX-5;
             })
             .attr("y", function (d) {
-                return d.centerY + 3;
+                return d.centerY+3;
             })
             .text(function (d) {
                 return d.name
