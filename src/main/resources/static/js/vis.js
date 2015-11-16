@@ -4,13 +4,25 @@ function VisController($scope, $http) {
     $http.get('/lion').
     success(function (data) {
         $scope.lions = data;
-        var circles = $scope.svgContainer.selectAll("circle").data(data).enter().append("circle");
+        var circles = $scope.svgContainer.selectAll("lion").data(data).enter().append("circle");
+        var text = $scope.svgContainer.selectAll("lion-text").data(data).enter().append("text");
         var circleAttributes = circles.attr("cx", function (d) {
             return d.x;
         }).attr("cy", function (d) {
-                return d.y;
+            return d.y;
         }).attr("r", "4")
             .attr("fill", "green");
+        var textLabels = text
+            .attr("x", function (d) {
+                return d.x + 3;
+            })
+            .attr("y", function (d) {
+                return d.y + 3;
+            })
+            .text(function (d) {
+                return d.name
+            })
+            .attr("font-size", "10px")
     });
     $http.get('/region').
     success(function (data) {
@@ -19,6 +31,29 @@ function VisController($scope, $http) {
     $http.get('/pond').
     success(function (data) {
         $scope.ponds = data;
+        var circles = $scope.svgContainer.selectAll("pond").data(data).enter().append("circle");
+        var text = $scope.svgContainer.selectAll("pond-text").data(data).enter().append("text");
+        var circleAttributes = circles.attr("cx", function (d) {
+            return d.centerX;
+        }).attr("cy", function (d) {
+            return d.centerY;
+        }).attr("r", function (d) {
+                return d.radius;
+            })
+            .attr("fill", "blue")
+            .attr("stroke", "black")
+            .attr("stroke-width", "2px");
+        var textLabels = text
+            .attr("x", function (d) {
+                return d.centerX + 3;
+            })
+            .attr("y", function (d) {
+                return d.centerY + 3;
+            })
+            .text(function (d) {
+                return d.name
+            })
+            .attr("font-size", "10px")
     });
 
 

@@ -18,6 +18,10 @@ public class Pond {
         return name + "(" + centerX + ", " + centerY + ")" + " r=" + radius;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public double getCenterX() {
         return centerX;
     }
