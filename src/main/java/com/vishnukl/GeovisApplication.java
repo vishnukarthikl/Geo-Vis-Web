@@ -10,12 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class GeovisApplication {
 
-    @RequestMapping("/")
-    @ResponseBody
-    String home() throws Exception {
-        return "Hello";
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(GeovisApplication.class, args);
     }
