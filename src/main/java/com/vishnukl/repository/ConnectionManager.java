@@ -8,13 +8,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionManager {
-    public static Connection getConnection(String host,
-                                           String port,
-                                           String sid,
-                                           String username,
-                                           String password)
+    private static String host = "localhost";
+    private static String port = "1521";
+    private static String sid = "xe";
+    private static String username = "SYSTEM";
+    private static String password = "lviss";
+
+    public static Connection getConnection()
             throws SQLException {
-        String thinConn = "jdbc:oracle:thin:@" + host + ":" + port + ":" + sid;
+        String thinConn = String.format("jdbc:oracle:thin:@%s:%s:%s", host, port, sid);
         Driver d = new OracleDriver();
         Connection conn = DriverManager.getConnection(thinConn, username, password);
         conn.setAutoCommit(false);
