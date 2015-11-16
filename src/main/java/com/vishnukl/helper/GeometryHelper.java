@@ -1,6 +1,7 @@
 package com.vishnukl.helper;
 
-import java.awt.*;
+import com.vishnukl.model.Point;
+
 import java.util.ArrayList;
 import java.util.List;
 
