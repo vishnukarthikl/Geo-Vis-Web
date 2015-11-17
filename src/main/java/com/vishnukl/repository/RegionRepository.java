@@ -6,6 +6,7 @@ import oracle.spatial.geometry.JGeometry;
 import oracle.sql.STRUCT;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,5 +30,18 @@ public class RegionRepository extends Repository {
             regions.add(new Region(name, GeometryHelper.calculatePoints(points)));
         }
         return regions;
+    }
+
+    public List<String> getItemsInside(String region) throws SQLException {
+        String query = "SELECT l.lion_id as region_has_lion FROM regions r, lions l, TABLE ( SDO_JOIN ('lions', 'coordinate','regions', 'bounds','mask=inside' ) ) lions_in_region WHERE l.rowid=lions_in_region.rowid1 and  r.rowid = lions_in_region.rowid2 and r.region_id= ? UNION select p.pond_id from ponds p, regions r, TABLE ( SDO_JOIN('ponds','bounds',   'regions','bounds',   'mask=inside' )) ponds_in_region where p.rowid=ponds_in_region.rowid1 and  r.rowid = ponds_in_region.rowid2 and r.region_id=?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setString(1, region);
+        stmt.setString(2, region);
+        List<String> items = new ArrayList<>();
+        ResultSet resultSet = stmt.executeQuery();
+        while (resultSet.next()) {
+            items.add(resultSet.getString(1));
+        }
+        return items;
     }
 }

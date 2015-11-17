@@ -12,24 +12,20 @@ function VisController($scope, $http) {
         showPonds();
     });
 
-    function getItemsToHighlight(regionName) {
-        return ["L1", "L2", "P2"];
-    }
-
     function showItemsIn(regionName) {
-        var itemsToHighlight = getItemsToHighlight(regionName);
-        itemsToHighlight.forEach(function (item) {
-            d3.selectAll("#" + item).data($scope.lions).attr("fill", "red");
-        })
-
+        $http.get('/items-in-region', {params: {region: regionName}}).success(function (data) {
+            data.forEach(function (item) {
+                d3.selectAll("#" + item).data($scope.lions).attr("fill", "red");
+            })
+        });
     }
 
     $http.get('/region').
     success(function (data) {
         $scope.regions = data;
         showRegions();
-        showLions();
         showPonds();
+        showLions();
     });
 
 
@@ -45,7 +41,7 @@ function VisController($scope, $http) {
                 return d.name
             })
             .attr("fill", "green");
-        var textLabels = texkt
+        var textLabels = text
             .attr("x", function (d) {
                 return d.x - 5;
             })
