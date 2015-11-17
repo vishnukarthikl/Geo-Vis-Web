@@ -9,10 +9,31 @@ function VisController($scope, $http) {
     $http.get('/pond').
     success(function (data) {
         $scope.ponds = data;
-        showPonds();
+    });
+
+    function clearAllHighlight() {
+        if ($scope.lions == null && $scope.ponds == null) {
+            return;
+        }
+        $scope.lions.forEach(function (i) {
+            d3.selectAll("#" + i.name).data([i]).attr("fill", "green");
+        });
+        $scope.ponds.forEach(function (i) {
+            d3.selectAll("#" + i.name).data([i]).attr("fill", "lightblue");
+        });
+    }
+
+    $scope.$watch('isHighlight', function (shouldHighlight) {
+        if (!shouldHighlight) {
+            clearAllHighlight();
+        }
     });
 
     function showItemsIn(regionName) {
+        if (!$scope.isHighlight) {
+            return;
+        }
+        clearAllHighlight();
         $http.get('/items-in-region', {params: {region: regionName}}).success(function (data) {
             data.forEach(function (item) {
                 d3.selectAll("#" + item).data($scope.lions).attr("fill", "red");
