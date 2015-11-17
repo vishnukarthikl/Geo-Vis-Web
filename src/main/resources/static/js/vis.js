@@ -1,16 +1,6 @@
 function VisController($scope, $http) {
     $scope.svgContainer = d3.select("div").append("svg").attr("width", 800).attr("height", 600);
 
-    $http.get('/lion').
-    success(function (data) {
-        $scope.lions = data;
-    });
-
-    $http.get('/pond').
-    success(function (data) {
-        $scope.ponds = data;
-    });
-
     function clearAllHighlight() {
         if ($scope.lions == null && $scope.ponds == null) {
             return;
@@ -36,14 +26,16 @@ function VisController($scope, $http) {
         clearAllHighlight();
         $http.get('/items-in-region', {params: {region: regionName}}).success(function (data) {
             data.forEach(function (item) {
-                d3.selectAll("#" + item).data($scope.lions).attr("fill", "red");
+                d3.selectAll("#" + item).data($scope.lions).attr("fill", "#FF3333");
             })
         });
     }
 
-    $http.get('/region').
+    $http.get('/all').
     success(function (data) {
-        $scope.regions = data;
+        $scope.regions = data.regions;
+        $scope.lions = data.lions;
+        $scope.ponds = data.ponds;
         showRegions();
         showPonds();
         showLions();
