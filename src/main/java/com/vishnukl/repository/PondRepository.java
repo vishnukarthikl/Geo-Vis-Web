@@ -3,6 +3,8 @@ package com.vishnukl.repository;
 import com.vishnukl.model.Pond;
 import oracle.spatial.geometry.JGeometry;
 import oracle.sql.STRUCT;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.awt.geom.Rectangle2D;
 import java.sql.Connection;
@@ -11,8 +13,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class PondRepository extends Repository {
 
+    @Autowired
     public PondRepository(Connection connection) {
         this.connection = connection;
         this.TABLE_NAME = "ponds";

@@ -4,6 +4,8 @@ import com.vishnukl.helper.GeometryHelper;
 import com.vishnukl.model.Region;
 import oracle.spatial.geometry.JGeometry;
 import oracle.sql.STRUCT;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +14,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class RegionRepository extends Repository {
 
+    @Autowired
     public RegionRepository(Connection connection) {
         this.connection = connection;
         this.TABLE_NAME = "regions";
