@@ -24,16 +24,13 @@ public class RegionRepository extends Repository {
     }
 
     public List<Region> getAllRegions() throws SQLException {
-        List<Region> regions = new ArrayList<>();
-        ResultSet resultSet = fetchQuery();
-        while (resultSet.next()) {
+        return (List<Region>) populate((resultSet, collector) -> {
             String name = resultSet.getString(1);
             STRUCT position = (STRUCT) resultSet.getObject(2);
             JGeometry bounds = JGeometry.load(position);
             double[] points = bounds.getOrdinatesArray();
-            regions.add(new Region(name, GeometryHelper.calculatePoints(points)));
-        }
-        return regions;
+            collector.add(new Region(name, GeometryHelper.calculatePoints(points)));
+        });
     }
 
     public List<String> getItemsInside(String region) throws SQLException {
